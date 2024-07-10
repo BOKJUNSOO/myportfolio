@@ -56,7 +56,9 @@ class ToplanFilter(BaseFilter):
         df = df.filter(df.language.isNotNull())
         lan_cnt_df = df.groupBy('language') \
                        .count() \
-                       .limit(10)
+                       .alias('language_count')
+        lan_cnt_df = lan_cnt_df.sort(F.desc("count")) \
+                               .limit(10)
         return lan_cnt_df
     
 class MonthlyStatFilter(BaseFilter):
