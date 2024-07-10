@@ -4,6 +4,7 @@ import pyspark.sql.functions as F
 
 
 class DailyStatFilter(BaseFilter):
+        # count method
     def hit_count(self, df, cond, col_name):
         return df.withColumn('is_cond', F.when(cond, 1).otherwise(0)).agg(F.sum('is_cond').alias(col_name))
 

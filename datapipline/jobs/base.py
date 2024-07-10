@@ -34,24 +34,30 @@ def read_input(spark, input_path):
         #     df = df.repartition(max_executor_num)
         return df
     else:
-        return print("데이터경로를 확인해주세요")
+        return print("데이터경로를 확인해주세요.")
     
 def init_df(df):
-    df = df.select('created_at', 'id', 'payload', 'type',
-                   df.actor.login.alias('login'), 
-                   df.actor.url.alias('url'), 'repo')
+    df = df.select('created_at', 'id', 'payload', 'type',       # 컬럼 순서 주의
+                    df.actor.login.alias('login'),
+                    df.actor.url.alias('url'), 
+                    'repo')
     
-    df = df.select('login', 'url', 'created_at', 'id', df.payload.repository_id.alias('repository_id'), \
-                   df.payload.size.alias('size'), df.payload.distinct_size.alias('distinct_size'), \
-                   df.payload.comment.alias('comment'), df.payload.pull_request.base.repo.language.alias('language'),
+    df = df.select('login', 'url', 'created_at', 'id',
+                   df.payload.repository_id.alias('repository_id'), \
+                   df.payload.size.alias('size'), 
+                   df.payload.distinct_size.alias('distinct_size'), \
+                   df.payload.pull_request.base.repo.language.alias('language'), \
+                   df.payload.comment.alias('comment'),
                    'type', 'repo')
     
-    df = df.select('login', 'url', 'created_at', 'id', 'repository_id', 'size', 'distinct_size', 'comment','language','type', \
+    df = df.select('login', 'url', 'created_at', 'id',
+                   'repository_id', 'size', 'distinct_size','language', 'comment', 
+                   'type', \
                    F.col('repo.name').alias('name'), df.repo.url.alias('repo_url'))
     
-    
-    n_cols = ['user_name', 'url', 'created_at', 'id', 'repository_id', 'size', 'distinct_size', 'comment', 'language',
+    n_cols = ['user_name', 'url', 'created_at', 'id', 'repository_id', 'size', 'distinct_size','language', 'comment', \
             'type', 'name', 'repo_url']
+    
     df = df.toDF(*n_cols)
 
     df = df.filter(F.col("login") != "github-actions[bot]")
