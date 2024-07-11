@@ -6,9 +6,10 @@ __pycache__/
 # C extensions
 *.so
 
+# JUNSOO
 # json
 *.json
-
+data/
 logs/
 # Distribution / packaging
 .Python

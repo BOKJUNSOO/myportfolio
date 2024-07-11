@@ -1,9 +1,9 @@
 #!/bin/bash
 
-JARS="/opt/bitnami/spark/resources/elasticsearch-spark-30_2.12-8.4.3.jar"
+JARS="/opt/bitnami/spark/resources/elasticsearch-spark-30_2.12-8.4.3.jar" # 3rd party /elastic search need jar file!
 
 JOBNAME="RefinePipeline"
-SCRIPT=$@
+SCRIPT=$@   #python file!
 echo ${SCRIPT}
 
 spark-submit \
@@ -23,4 +23,4 @@ spark-submit \
   --conf spark.driver.maxResultSize=0 \
   --num-executors 2 \
   --executor-cores 1 \
-  ${SCRIPT}
+  ${SCRIPT} #--input_path={} --target_date={}

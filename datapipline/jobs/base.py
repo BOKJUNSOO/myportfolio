@@ -70,7 +70,7 @@ def init_df(df):
     return df
 
 def df_with_meta(df, datetime):
-    df = df.withColumn("@timestamp", F.lit(datetime)) 
+    df = df.withColumn("@timestamp", F.lit(datetime)) #elastic search 를 위해서
     return df
 
 

@@ -10,8 +10,12 @@ from es import Es
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--target_date", default=None, help="optional:target date(yyyy-mm-dd)")
+    
+    '''argument에 spark ,input ,targetdate 전달해서 class에서 사용'''
+    #args 객체생성
     args = parser.parse_args()
 
+    # spark 객체생성
     spark = (SparkSession
         .builder
         .master("local")
@@ -20,10 +24,11 @@ if __name__ == "__main__":
         .config("spark.jars", "opt/bitnami/spark/resources/elasticsearch-spark-30_2.12-8.4.3.jar")
         .getOrCreate())
     
-    args.spark = spark
-    #if args.target_date is None: 
+    '''spark, target_date, input_path'''
+    args.spark = spark  
+    # if args.target_date is None: 
     #    args.target_date = (datetime.now() - timedelta(1)).strftime('%Y-%m-%d')
-    args.input_path = "/opt/bitnami/spark/data/*.json"
+    args.input_path = "/opt/bitnami/spark/data/*.json"      # args.input_path = f"/opt/bitnami/spark/data{args.target_data}*.json"
 
     df = read_input(args.spark, args.input_path)
     df = init_df(df)
@@ -48,6 +53,7 @@ if __name__ == "__main__":
     # daily language
     lan_filter = ToplanFilter(args)
     lan_df = lan_filter.filter(df)
+    lan_df = df_with_meta(lan_df, args.targe_date)
 
     stat_df.show()
     repo_df.show()

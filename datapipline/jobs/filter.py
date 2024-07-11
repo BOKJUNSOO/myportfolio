@@ -7,14 +7,15 @@ class DailyStatFilter(BaseFilter):
         # count method
     def hit_count(self, df, cond, col_name):
         return df.withColumn('is_cond', F.when(cond, 1).otherwise(0)).agg(F.sum('is_cond').alias(col_name))
-
+    
     def filter(self, df):
         # daily stats
-        stat_df = df.agg(F.countDistinct('user_name').alias('d_user_count'))
-        stat_df = stat_df.crossJoin(df.agg(F.countDistinct('repository_id').alias('d_repo_count')))
+        stat_df = df.agg(F.countDistinct('user_name').alias('d_user_count')) 
+        stat_df = stat_df.crossJoin(df.agg(F.countDistinct('repository_id').alias('d_repo_count'))) # d_user_count | d_repo_count |
 
         push_cnt_df = self.hit_count(df, F.col('type') == 'PushEvent', 'push_count')
-        push_cnt_df = push_cnt_df.cache()
+        #df.where(F.col('type') == 'PushEvent').count() 로 작성하면 return 값이 int// dataframe으로 값을 return 받기위해서
+        push_cnt_df = push_cnt_df.cache()       # dataframe 생성시마다 cache() 호출
         stat_df = stat_df.crossJoin(push_cnt_df)
 
         pr_cnt_df = self.hit_count(df, F.col('type') == 'PullRequestEvent', 'pr_count')
