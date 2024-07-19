@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 default_args = {
     "owner": "airflow",
     "depends_on_past": False,
-    "start_date": datetime(2024, 6, 26),
+    "start_date": datetime(2024, 7, 17),
     "retries": 1,
     "retry_delay": timedelta(minutes=2),
     # "on_failure_callback": ,
@@ -16,21 +16,23 @@ default_args = {
 dag = DAG("github-archive-pipeline", 
           default_args=default_args, 
           max_active_runs=1, 
-          schedule_interval="0 30 * * *", 
           catchup=False, 
           tags=['data'])
 
+# 데이터 저장
 dt = (datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')
+
 download_data = BashOperator(
     task_id='download-data',
     bash_command=f"/opt/airflow/jobs/download-data.sh {dt} ",
     dag=dag
 )
 
+# spark-submit with /bin/bash
 filename = '/opt/airflow/jobs/main.py'
 filter_data = BashOperator(
     task_id='filter-data',
-    bash_command=f'/opt/airflow/jobs/spark-submit.sh {filename} ',
+    bash_command=f'/opt/airflow/jobs/spark-submit.sh {filename}',
     dag=dag
 )
 

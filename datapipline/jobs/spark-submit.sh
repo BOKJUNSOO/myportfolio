@@ -1,15 +1,14 @@
 #!/bin/bash
-
-JARS="/opt/bitnami/spark/resources/elasticsearch-spark-30_2.12-8.4.3.jar" # 3rd party /elastic search need jar file!
-
+JARS="/opt/bitnami/spark/resources/elasticsearch-spark-30_2.12-8.4.3.jar" #3rd party need jar
 JOBNAME="RefinePipeline"
-SCRIPT=$@   #python file!
+SCRIPT=$@
 echo ${SCRIPT}
+
 
 spark-submit \
   --name ${JOBNAME} \
-  --master spark://spark-master:7077 \
   --jars ${JARS} \
+  --master spark://spark-master:7077 \
   --conf spark.dynamicAllocation.enabled=true \
   --conf spark.dynamicAllocation.executorIdleTimeout=2m \
   --conf spark.dynamicAllocation.minExecutors=1 \
@@ -24,3 +23,6 @@ spark-submit \
   --num-executors 2 \
   --executor-cores 1 \
   ${SCRIPT} #--input_path={} --target_date={}
+
+# docker exec -it datapipline-spark-master-1 spark-submit
+# docker exec -it datapipline-spark-master-1 /bin/bash

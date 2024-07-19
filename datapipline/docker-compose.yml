@@ -1,7 +1,7 @@
 version: '3'
 
-x-spark-common: &spark-common
-  image: bitnami/spark:latest
+x-spark-common: &spark-common # master & worker - common
+  image: bitnami/spark:latest # build with docker image
   volumes:
     - ./jobs:/opt/bitnami/spark/jobs    #mapping with local
     - ./data:/opt/bitnami/spark/data
@@ -9,20 +9,20 @@ x-spark-common: &spark-common
   networks:
     - default-network
 
-x-airflow-common: &airflow-common
+x-airflow-common: &airflow-common # scheduler & webserver - common
   build:
     context: .
-    dockerfile: Dockerfile
+    dockerfile: Dockerfile  # build with docker file // wget..
   env_file:
     - airflow.env
   volumes:
-    - ./jobs:/opt/airflow/jobs
+    - ./jobs:/opt/airflow/jobs  # jobs 파일 dag에서 불러서 이용
     - ./dags:/opt/airflow/dags
     - ./logs:/opt/airflow/logs
-    - ./data:/opt/bitnami/spark/data
+    - ./data:/opt/bitnami/spark/data  # 데이터는 spark 가 읽도록
     - ./resources:/opt/bitnami/spark/resources
   depends_on:
-    - postgres
+    - postgres  # need matadata for airflow
   networks:
     - default-network
 
@@ -79,7 +79,7 @@ services:
       - JUPYTER_TOKEN=password
 
   es:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.4.3
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.4.3    # 버전확인
     networks:
       - default-network
     environment:
@@ -98,7 +98,7 @@ services:
         soft: -1
         hard: -1
     volumes:
-      - ./es-data:/usr/share/es/data
+      - ./es-data:/usr/share/es/data    #데이터 저장용 디렉토리 #_search?query=match_all (datasetting)
     ports:
       - 9200:9200
 
@@ -108,16 +108,16 @@ services:
       - default-network
     environment:
       - SERVERNAME=kibana
-      - ELASTICSEARCH_HOSTS=http://es:9200
+      - ELASTICSEARCH_HOSTS=http://es:9200  # to use with elastic search 
       - ELASTICSEARCH_USERNAME=kibana
       - ELASTICSEARCH_PASSWORD=password
     ports:
       - 5601:5601
-    depends_on:
-      - es
+    depends_on:   # ES then kibana
+      - es        # elastic search node name
 
   postgres:
-    image: postgres:14.0
+    image: postgres:14.0  # build with docker image
     environment:
       - POSTGRES_USER=airflow
       - POSTGRES_PASSWORD=airflow
@@ -129,7 +129,7 @@ services:
     <<: *airflow-common
     command: webserver
     ports:
-      - "8081:8080"
+      - "8081:8080" # UI : 8081
     depends_on:
       - scheduler
 

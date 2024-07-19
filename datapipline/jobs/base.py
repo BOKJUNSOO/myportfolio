@@ -34,7 +34,7 @@ def read_input(spark, input_path):
         #     df = df.repartition(max_executor_num)
         return df
     else:
-        return print("데이터경로를 확인해주세요.")
+        return print("데이터경로 혹은 수집된 데이터의 일자를 확인해주세요.")
     
 def init_df(df):
     df = df.select('created_at', 'id', 'payload', 'type',       # 컬럼 순서 주의
@@ -70,7 +70,7 @@ def init_df(df):
     return df
 
 def df_with_meta(df, datetime):
-    df = df.withColumn("@timestamp", F.lit(datetime)) #elastic search 를 위해서
+    df = df.withColumn("@timestamp", F.lit(datetime)) #elastic search indexing
     return df
 
 
