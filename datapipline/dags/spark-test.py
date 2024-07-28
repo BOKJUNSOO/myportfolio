@@ -4,7 +4,7 @@ from airflow.contrib.operators.spark_submit_operator import SparkSubmitOperator
 from datetime import datetime, timedelta
 
 
-file_path = "/opt/bitnami/spark/data/movies.csv"    # data는 무조건 spark에서 읽기
+file_path = "/opt/bitnami/spark/data/movies.csv"    # data spark에서 읽기
 
 now = datetime.now()
 

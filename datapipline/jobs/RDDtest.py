@@ -33,5 +33,6 @@ print(
     rdd2.countApproxDistinct(), #185243
     sep = '/'
     )
+
 # stop sparksession
 spark.stop()

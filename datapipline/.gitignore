@@ -6,11 +6,13 @@ __pycache__/
 # C extensions
 *.so
 
-# JUNSOO
-# json
-*.json
+# airflow with dagsfile , json 
+*.env/  
+*.json/
 data/
 logs/
+dags/
+
 # Distribution / packaging
 .Python
 build/
