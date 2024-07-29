@@ -11,11 +11,11 @@ class DailyStatFilter(BaseFilter):
     def filter(self, df):
         # daily stats
         stat_df = df.agg(F.countDistinct('user_name').alias('d_user_count')) 
-        stat_df = stat_df.crossJoin(df.agg(F.countDistinct('repository_id').alias('d_repo_count'))) # d_user_count | d_repo_count |
+        stat_df = stat_df.crossJoin(df.agg(F.countDistinct('repository_id').alias('d_repo_count'))) 
 
-        push_cnt_df = self.hit_count(df, F.col('type') == 'PushEvent', 'push_count')
-        #df.where(F.col('type') == 'PushEvent').count() 로 작성하면 return 값이 int// dataframe으로 값을 return 받기위해서
-        push_cnt_df = push_cnt_df.cache()       # dataframe 생성시마다 cache() 호출
+        push_cnt_df = self.hit_count(df, F.col('type') == 'PushEvent', 'push_count') # return -> dataframe
+        #df.where(F.col('type') == 'PushEvent').count() return -> int
+        push_cnt_df = push_cnt_df.cache()       # df생성시 cache() 호출
         stat_df = stat_df.crossJoin(push_cnt_df)
 
         pr_cnt_df = self.hit_count(df, F.col('type') == 'PullRequestEvent', 'pr_count')

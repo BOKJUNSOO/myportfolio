@@ -24,5 +24,5 @@ spark-submit \
   --executor-cores 1 \
   ${SCRIPT} #--input_path={} --target_date={}
 
-# docker exec -it datapipline-spark-master-1 spark-submit
 # docker exec -it datapipline-spark-master-1 /bin/bash
+# docker exec -it datapipline-spark-master-1 spark-submit --jars <jar file path/filename.jar> --master spark://spark-master:7077 jobs/main.py

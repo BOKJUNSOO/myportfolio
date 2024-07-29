@@ -37,7 +37,7 @@ def read_input(spark, input_path):
         return print("데이터경로 혹은 수집된 데이터의 일자를 확인해주세요.")
     
 def init_df(df):
-    df = df.select('created_at', 'id', 'payload', 'type',       # 컬럼 순서 주의
+    df = df.select('created_at', 'id', 'payload', 'type',       
                     df.actor.login.alias('login'),
                     df.actor.url.alias('url'), 
                     'repo')
@@ -77,7 +77,7 @@ def df_with_meta(df, datetime):
 class BaseFilter(ABC):
     def __init__(self, args):
         self.args = args
-        self.spark = args.spark     #spark도 args를 가지고 있도록 지정한다.
+        self.spark = args.spark     # spark도 args를 가지고 있도록 지정한다.
 
-    def filter(self, df):           #메서드 오버드라이빙
+    def filter(self, df):           # method overdriving
         None

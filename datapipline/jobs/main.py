@@ -12,13 +12,13 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--target_date", default=None, help="optional:target date(yyyy-mm-dd)")
     
-    '''argument에 1)target_date 2)spark 3)input_path  전달해서 class에서 사용'''
+    '''argument parsing'''
     # args 객체생성
     args = parser.parse_args()
     
     # 1) args + target_date
     '''수집된 데이터의 일자와 Elastic search 의 indexing(@timestamp)'''
-    args.target_date = "2024-07-07"     # hyper parameter
+    args.target_date = "2024-07-07"     # wget data
 
     # spark 객체생성
     spark = (SparkSession
@@ -29,7 +29,6 @@ if __name__ == "__main__":
         .config("spark.jars", "/opt/bitnami/spark/resources/elasticsearch-spark-30_2.12-8.4.3.jar")
         .getOrCreate())
     
-    '''spark, input_path'''
     # 2) args + spark
     args.spark = spark  
 
@@ -74,7 +73,6 @@ if __name__ == "__main__":
 
     # store data to ES
     # http://localhost:5601/app/home#/
-    # ES 환경변수 설정..!
     es = Es("http://es:9200")
     es.write_df(stat_df, "daily-stats-2024")
     es.write_df(repo_df, "top-repo-2024")
