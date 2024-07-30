@@ -3,6 +3,7 @@ datapipline with pyspark
 
 ## Directory Structure
 
+```
 | data
   |- data with github archive
 | jobs
@@ -10,6 +11,7 @@ datapipline with pyspark
 | resources
   |- .jars for spark third-party app(elastic Search)
 | docker-compose.yml
+```
 
 ## How to run pyspark project
 

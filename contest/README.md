@@ -12,6 +12,7 @@ Target이 되는 변수는 학교별 점수입니다.
 
 ## Directory Structure
 
+```
 | data
   |- 2020~2024 SCHOOL DATASET (with preprocessing)
 | job
@@ -19,4 +20,5 @@ Target이 되는 변수는 학교별 점수입니다.
   |- 1.combineData : combine dataset
   |- 2.modelingAndval : modeling(Regressor)
   |- 3.EDA : result
+```
 
