@@ -2,7 +2,7 @@
 import requests
 import json
 headers = {
-    "x-nxopen-api-key":"test_d93d63d3d8fc3be70ce088ad5bb258a89c36d83c201c17f80186f66e7c2946ccefe8d04e6d233bd35cf2fabdeb93fb0d"
+    "x-nxopen-api-key": "test"
 }
 
 date = "2024-05-05"

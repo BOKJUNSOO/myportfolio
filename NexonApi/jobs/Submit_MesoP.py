@@ -23,8 +23,11 @@ df = spark.read.format("json") \
 df.printSchema()
 
 # initializing
+# solve nested json with explode
 df_flat = df.select(F.explode("potential_history")
                      .alias("potential_info"))
+df_flat.show(1,False)
+
 df_flat = df_flat.select("potential_info.after_potential_option.value" # object
                          ,"potential_info.after_potential_option.grade"
                          ,"potential_info.target_item"
