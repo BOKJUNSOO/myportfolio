@@ -5,6 +5,7 @@ __pycache__/
 
 # GET OPEN API
 getData.py
+notcommit/
 
 # C extensions
 *.so
