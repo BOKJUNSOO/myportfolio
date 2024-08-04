@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# GET OPEN API
+getData.py
+
 # C extensions
 *.so
 *.json
