@@ -28,10 +28,7 @@ df_flat = df.select(F.explode("potential_history")
                      .alias("potential_info"))
 df_flat.show(1,False)
 
-df_flat = df_flat.select("potential_info.after_potential_option.value" # object
-                         ,"potential_info.after_potential_option.grade"
-                         ,"potential_info.target_item"
-                         ,"potential_info.potential_option_grade")
+df_flat = df_flat.select("potential_info")
 
 df_flat.show(10, False)
 
@@ -78,5 +75,4 @@ break_count3_df = break_count3_df.groupBy("third_line_grade") \
 break_count3_df.show()
 
 
-# bin\bash
-# docker exec -it nexonapi-spark-master-1 spark-submit --master spark://spark-master:7077 jobs/SparkSubmit.py date/myapi_m_2024-05-05.json
+# docker exec -it Game_domain-spark-master-1 spark-submit --master spark://spark-master:7077 jobs/SparkSubmit.py date/myapi_m_2024-05-05.json
