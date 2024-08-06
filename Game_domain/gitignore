@@ -4,7 +4,8 @@ __pycache__/
 *$py.class
 
 # GET OPEN API
-notcommit/
+data/
+*.json/
 
 # C extensions
 *.so
