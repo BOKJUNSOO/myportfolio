@@ -13,14 +13,16 @@ spark = (
 )
 
 # load
-target_date = "2024-08"
-file_path = f"/opt/bitnami/spark/data/ranking_{target_date}-*.json"
+# target_date = "2024-08"
+# file_path = f"/opt/bitnami/spark/data/ranking_{target_date}-*.json"
+file_path = "/opt/bitnami/spark/data/ranking_merge.json"
 df = spark.read.format("json") \
                .option("multiLine",True) \
                .option("header", True) \
                .option("inferschema", True) \
                .load(file_path)
 df.printSchema()
+df.show(1,False)
 
 # select column to use
 
@@ -32,6 +34,7 @@ df_flat = df_flat.select("ranking_info.date",
                          "ranking_info.class_name",
                          "ranking_info.sub_class_name")
 
+df_flat.show(10,False)
 # fill class
 
 df_flat = df_flat.withColumn("class" , df_flat["sub_class_name"])
@@ -40,6 +43,7 @@ df_flat = df_flat.withColumn("class",
                               .otherwise(F.col("class")))
 df_flat = df_flat.drop("class_name","sub_class_name")
 
+df_flat.show(10,False)
 
 # Categorization level range
 df_flat = df_flat.withColumn("status" ,
@@ -56,8 +60,8 @@ df_group = df_flat.groupBy("class","date") \
                   .pivot("status").count()
 
 # sum Carcion + Arteria + Dowonkyung
-map_list = ["Arteria","Carcion","Dowonkyung","Tallahart"]
-
+#map_list = ["Arteria","Carcion","Dowonkyung","Tallahart"]
+map_list = ["Carcion","Tallahart"] # test data
 df_group = df_group.withColumn("sum",
                                sum([F.col(c) for c in map_list]))
 
@@ -70,10 +74,7 @@ df_group = df_group.withColumn("key_value",
                                    )
                                ))
 df = df_group.select(["key_value","sum",
-                      "Tallahart","Carcion","Arteria","Dowonkyung"])
+                      "Tallahart","Carcion"]) # without Arteria and Dowonkyung (test data)
 df = df.orderBy(F.desc("Tallahart"))
 df.show(10, False)
-
-# join data that already filtering
-
 
