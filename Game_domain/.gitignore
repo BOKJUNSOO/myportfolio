@@ -3,13 +3,16 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# GET OPEN API
-data/
-*.json/
-
 # C extensions
 *.so
-*.json
+
+# airflow with dagsfile , json 
+*.env/  
+*.json/
+data/
+logs/
+dags/
+
 # Distribution / packaging
 .Python
 build/
