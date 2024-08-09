@@ -1,4 +1,4 @@
-from base import BaseFilter
+from Game_domain.jobs.data_pipline.base import BaseFilter
 import pyspark.sql.functions as F
 from pyspark.sql import Window
 
@@ -25,10 +25,20 @@ class TopClassFilter(BaseFilter):
 
 # detect exp history (compare with yesterday data)
 # depend on init2_df method
+class TopExpUserFilter(BaseFilter):
+    def filter(self, df):
+        df = df.select(df["character_name"],
+                       df["increase_exp"],
+                       df["character_level"],
+                       )\
+                .orderBy(F.desc("increase_exp"))
+        return df
+    
 class TopExpClassFilter(BaseFilter):
     def filter(self, df):
         return None
-
-class TopExpUserFilter(BaseFilter):
+#
+class Congratulation(BaseFilter):
     def filter(self, df):
         return None
+    

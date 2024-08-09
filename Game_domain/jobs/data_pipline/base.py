@@ -4,6 +4,15 @@ from abc import ABC, abstractmethod
 import pyspark.sql.functions as F
 from pyspark.sql.functions import when
 
+class BaseFilter(ABC):
+    def __init__(self, args):
+        self.args = args
+        self.spark = args.spark
+        
+    def filter (self,df):
+        None
+
+# Check data exist
 def read_input(spark, input_path):
     def _input_exists(input_path):
         return glob.glob(input_path)
@@ -14,7 +23,7 @@ def read_input(spark, input_path):
 
         return df
     else:
-        return print("해당 경로에 파일이 위치하지 않습니다.")
+        return print("파일이 위치하지 않습니다.")
 
 def read_input2(spark, input_path):
     def _input_exists(input_path):
@@ -26,14 +35,16 @@ def read_input2(spark, input_path):
 
         return df
     else:
-        return print("전날 수집된 데이터가 존재하지 않습니다.")
+        return print("전날 데이터를 먼저 수집해주세요.")
 
+# Preprocessing for data store
 def init_df(df):
     # select column to use
     df = df.select(F.explode("ranking")
                          .alias("ranking_info"))
     df = df.select("ranking_info.date",
                    "ranking_info.character_level",
+                   "ranking_info.character_exp",
                    "ranking_info.class_name",
                    "ranking_info.sub_class_name")
     # fill class (at least not null)
@@ -43,8 +54,11 @@ def init_df(df):
                         .otherwise(F.col("class")))
     df = df.drop("class_name", "sub_class_name")
     df.show(10,False)
+    return df
 
-    # Categorization level range
+# Categorization level range
+def status_df(df):
+
     df = df.withColumn("status" ,
                        when(df["character_level"] > 289, "Tallahart")
                              .when((df["character_level"] < 290) &(df["character_level"] > 284) , "Carcion")
@@ -59,13 +73,12 @@ def init_df(df):
                        )
     return df
 
-def init2_df(df, df_b):
-    return None
-
-
-class BaseFilter(ABC):
-    def __init__(self, args):
-        self.args = args
-        self.spark = args.spark
-    def filter (self,df):
-        None
+# join today and yesterday dataframe (when use, depend on init_df)
+def init2_df(df_t, df_y):
+    df = df_t.join(df_y,
+                    (df_t["character_name"] == df_y["character_name"]) &
+                    (df_t["character_level"] == df_y["character_level"]),
+                    "inner")
+    df = df.withColumn("increase_exp",
+                       (df_t["character_exp"] - df_y["character_exp"]))
+    return df
