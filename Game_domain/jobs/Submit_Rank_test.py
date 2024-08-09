@@ -17,7 +17,7 @@ spark = (
 
 # load
 # file_path = f"/opt/bitnami/spark/data/ranking_{target_date}-*.json"
-file_path = "/opt/bitnami/spark/data/ranking_B.json"
+file_path = "/opt/bitnami/spark/data/ranking_2024-08-09.json"
 df = spark.read \
             .format("json") \
             .option("multiLine",True) \
@@ -32,6 +32,7 @@ df_flat = df.select(F.explode("ranking")
                      .alias("ranking_info"))
 
 df_flat = df_flat.select("ranking_info.date",
+                         "ranking_info.character_name",
                          "ranking_info.character_level",
                          "ranking_info.class_name",
                          "ranking_info.sub_class_name")
@@ -52,7 +53,7 @@ df_flat = df_flat.withColumn("status" ,
                              .when((df_flat["character_level"] < 285) & (df_flat["character_level"] > 279) , "Arteria")
                              .when((df_flat["character_level"] < 280) & (df_flat["character_level"] > 274) , "Dowonkyung")
                              .otherwise(F.col("character_level")))
-df_flat.cache()
+
 df_flat.show(10,False) 
 
 # groupBy level range
@@ -75,9 +76,9 @@ df_group = df_group.withColumn("key_value",
                                    F.col("class")
                                    )
                                ))
-df = df_group.select(["key_value",
+df = df_group.select(["class",
                       "Tallahart","Carcion","Arteria","Dowonkyung",
-                      "sum","date"]) 
+                      "sum","rank","date"]) 
 
 # over partition by Date & order by sum
 window = Window.partitionBy("date").orderBy(F.desc("sum"))
@@ -86,7 +87,7 @@ df.show(10, False)
 
 
 # Save DataFrame by write data to the MySQL Server
-df.write \
+"""df.write \
   .format("jdbc") \
   .option("driver", "com.mysql.cj.jdvc.Driver") \
   .option("url", "jdbc:mysql://localhost:3306/emp") \
@@ -94,4 +95,4 @@ df.write \
   .option("user", "root") \
   .option("password", "") \
   .save()
-
+"""

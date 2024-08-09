@@ -5,7 +5,7 @@ headers = {
     "x-nxopen-api-key": "My api key"
 }
 
-date = "2024-05-05"
+date = "2024-05-05" # my miracle time..
 urlString = f"https://open.api.nexon.com/maplestory/v1/history/cube?count=1000&date={date}" 
 # urlString = f"https://open.api.nexon.com/maplestory/v1/history/potential?count=1000&date={date}"
 
