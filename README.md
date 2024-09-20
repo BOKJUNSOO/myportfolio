@@ -15,11 +15,11 @@
 진행했던 개인 프로젝트와 팀 프로젝트들 입니다!  
 개인 프로젝트에서는 ***데이터 분석가로서의 역량개발 및 데이터 직무에서 필요로 하는 기술스택*** 에 대해 공부했으며,
 
-> SQL 을 공부하기 위해 Spark document에서 자주 사용되는 문법들을 공부했으며,
+> SQL 을 공부하기 위해 SparkJob에서 자주 사용되는 문법들을 공부했으며,
 
 > Python을 이용한 데이터분석 역량을 기르기 위해 Pandas와 같은 파이썬 라이브러리를 공부했습니다. 
 
-팀 프로젝트 역할면에서는 ***데이터분석, 일정 및 문서관리*** 를 맡아 진행했습니다.
+> 팀 프로젝트에서는 ***데이터분석, 일정 및 문서관리*** 를 맡아 진행했습니다.
 
 ## 1. 🛫 ETL_DATA
 
@@ -54,6 +54,5 @@
 # 📞 Contact
 
 - 이메일 : brianbok97@gmail.com
-- 깃허브 : <a href="https://github.com/BOKJUNSOO/BOKJUNSOO">
   <img src="https://user-images.githubusercontent.com/68724828/185908612-22f4d219-78a7-4de7-bb02-deecaa63bffa.png" height="28px" style="margin-top: 10px" />
   </a>
