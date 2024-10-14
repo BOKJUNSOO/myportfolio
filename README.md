@@ -20,7 +20,7 @@
 
 > 팀 프로젝트에서는 ***데이터분석및데이터파이프라인구축*** 을 맡아 진행했습니다.
 
-[프로젝트 결과 및 이력서 Repo]
+[프로젝트 결과 및 이력서 Repo](https://github.com/BOKJUNSOO/MYRESUME.git)
 
 
 
